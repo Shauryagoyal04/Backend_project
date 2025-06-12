@@ -4,10 +4,10 @@ import fs from 'fs';
     cloudinary.config({ 
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
         api_key: process.env.CLOUDINARY_API_KEY, 
-        api_secret: process.env.CLOUDINARY_API_SECRET
+        api_secret: process.env.CLOUDINARY_API_SECRET,
     });
 
-    const uploadCloudinary = async (filePath) => {
+    const uploadToCloudinary = async (filePath) => {
         try {
             if(!filePath) {
                 console.log("Invalid file path");
@@ -17,7 +17,9 @@ import fs from 'fs';
                 resource_type: 'auto' 
             });
 
-            console.log("File uploaded successfully on cloudinary",response.url);
+            //console.log("File uploaded successfully on cloudinary",response.url);
+            fs.unlinkSync(filePath); // Delete the locally saved temporary file after upload
+            console.log("CLoudinary Respinse",response)
             return response;
         }catch (error) {
             fs.unlinkSync(filePath); // Delete the locally saved temporary file if upload fails
@@ -26,4 +28,4 @@ import fs from 'fs';
         }
     }
 
-    export {uploadCloudinary}
+    export {uploadToCloudinary}
