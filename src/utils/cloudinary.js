@@ -19,7 +19,7 @@ import fs from 'fs';
 
             //console.log("File uploaded successfully on cloudinary",response.url);
             fs.unlinkSync(filePath); // Delete the locally saved temporary file after upload
-            console.log("CLoudinary Respinse",response)
+            //console.log("CLoudinary Respinse",response)
             return response;
         }catch (error) {
             fs.unlinkSync(filePath); // Delete the locally saved temporary file if upload fails
