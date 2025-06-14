@@ -28,4 +28,38 @@ import fs from 'fs';
         }
     }
 
-    export {uploadToCloudinary}
+
+    const getPublicIdFromUrl = (url) => {
+        try {
+            const parts = url.split('/');
+            const fileWithExtension = parts.pop(); // "my_image.jpg"
+            const publicId = fileWithExtension.split('.')[0]; // "my_image"
+            
+            return `${publicId}`; 
+        } catch (err) {
+            console.error("Error extracting public_id:", err);
+            return null;
+        }
+    };
+
+    const deletefromCloudinary = async (url) => {
+       
+        const publicId = getPublicIdFromUrl(url);
+        if (!publicId) return null;
+
+       // console.log("Public ID to delete:", publicId);
+
+        try {
+            const result = await cloudinary.uploader.destroy(publicId,{
+                resource_type: 'image'
+            }); 
+            
+            //console.log("Deleted:", result);
+            return result;
+        } catch (err) {
+            console.error("Error deleting:", err);
+            return null;
+        }
+    }
+
+    export {uploadToCloudinary,deletefromCloudinary}
