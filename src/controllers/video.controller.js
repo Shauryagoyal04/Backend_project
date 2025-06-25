@@ -4,7 +4,7 @@ import {User} from "../models/user.model.js"
 import {ApiError} from "../utils/apiError.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
-import {uploadOnCloudinary} from "../utils/cloudinary.js"
+import {uploadToCloudinary} from "../utils/cloudinary.js"
 
 
 const getAllVideos = asyncHandler(async (req, res) => {
@@ -51,8 +51,8 @@ const publishAVideo = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Both video file and thumbnail are required");
     }
 
-    const videoCloudinary = await uploadOnCloudinary(videoLocal.path);
-    const thumbnailCloudinary = await uploadOnCloudinary(thumbnailLocal.path);
+    const videoCloudinary = await uploadToCloudinary(videoLocal.path);
+    const thumbnailCloudinary = await uploadToCloudinary(thumbnailLocal.path);
 
     if (!videoCloudinary?.url || !thumbnailCloudinary?.url) {
         throw new ApiError(500, "Cloudinary upload failed");
@@ -103,7 +103,7 @@ const updateVideo = asyncHandler(async (req, res) => {
     if (description) video.description = description;
 
     if (req.file) {
-      const newThumb = await uploadOnCloudinary(req.file.path);
+      const newThumb = await uploadToCloudinary(req.file.path);
       if (newThumb?.url) video.thumbnail = newThumb.url;
     }
 
